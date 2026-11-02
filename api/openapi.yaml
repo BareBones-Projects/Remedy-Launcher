@@ -4,6 +4,8 @@ info:
   version: 0.1.0
   description: Draft contract for repository discovery, provider status, and support intake. Install actions remain native-companion responsibilities.
 servers:
+  - url: http://localhost:4173/api
+    description: Local prototype endpoint.
   - url: https://launcher.example.invalid/api/v1
     description: Placeholder; configure the production host before use.
 paths:
