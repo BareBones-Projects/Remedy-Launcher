@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: Remedy Launcher API
+  version: 0.1.0
+  description: Draft contract for repository discovery, provider status, and support intake. Install actions remain native-companion responsibilities.
+servers:
+  - url: https://launcher.example.invalid/api/v1
+    description: Placeholder; configure the production host before use.
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Check API availability
+      responses:
+        '200':
+          description: Service status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, service, version]
+                properties:
+                  ok: { type: boolean }
+                  service: { type: string, const: remedy-launcher-api }
+                  version: { type: string }
+  /repositories:
+    get:
+      operationId: listRepositories
+      summary: List approved software repositories
+      responses:
+        '200':
+          description: Repository catalog
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      required: [id, name, owner, status, description]
+                      properties:
+                        id: { type: string }
+                        name: { type: string }
+                        owner: { type: string }
+                        status: { type: string, enum: [stable, preview, disabled] }
+                        description: { type: string }
+  /auth/providers:
+    get:
+      operationId: listAuthProviders
+      summary: Report configured sign-in providers
+      responses:
+        '200':
+          description: Provider configuration state; never contains credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [providers, configured]
+                properties:
+                  providers:
+                    type: array
+                    items: { type: string, enum: [google, facebook, microsoft, github, x] }
+                  configured:
+                    type: array
+                    items: { type: string }
+  /support/tickets:
+    post:
+      operationId: createSupportTicket
+      summary: Submit a support request
+      description: Requires a connected ticket backend, abuse controls, and retention policy before production use.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [subject, message]
+              properties:
+                subject: { type: string, minLength: 1, maxLength: 120 }
+                message: { type: string, minLength: 1, maxLength: 10000 }
+      responses:
+        '201':
+          description: Ticket created
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, status]
+                properties:
+                  id: { type: string }
+                  status: { type: string, enum: [open] }
+        '400': { description: Invalid request body }
+        '429': { description: Rate limit exceeded }
+        '501': { description: Ticket backend is not configured }
