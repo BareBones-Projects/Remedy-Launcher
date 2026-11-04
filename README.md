@@ -10,9 +10,10 @@ npm run check
 npm test
 npm run start -- status
 npm run start -- releases-url
+npm run start -- browser-bridge
 ```
 
-No GitHub token is required for these local commands. No downloads, installations, updates, or privileged operations are performed. Cross-platform CI checks are in `.github/workflows/verify.yml`.
+`browser-bridge` fetches and validates Tuna Browser’s pinned bridge manifest from its public repository. It only reports the supported protocol and argument contract; it does not launch or install the browser. No GitHub token is required. No downloads, installations, updates, or privileged operations are performed by this command. Cross-platform CI checks are in `.github/workflows/verify.yml`.
 
 ## Security boundary
 The launcher must never request browser vault keys, cookies, tokens, or browsing history. Future release downloads must verify hashes/signatures before execution and require user confirmation.
