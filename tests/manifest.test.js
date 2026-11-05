@@ -11,3 +11,7 @@ test('reject arbitrary repo',()=>assert.throws(()=>releasesEndpoint('attacker/re
 test('browser bridge manifest URL is pinned to Tuna repository',()=>assert.match(BROWSER_BRIDGE_MANIFEST,/BareBones-Projects\/Tuna-Browser\/main\/launcher\/bridge-manifest\.json$/));
 test('validates the documented Tuna bridge contract',()=>assert.equal(validateBrowserBridge({schema:1,product:'Tuna Browser',launcher:'Remedy Launcher',protocol:'tunabrowser://',args:['--launcher-ping','--launcher-open <https-url>'],permissions:['launch','open_http_https']}).protocol,'tunabrowser://'));
 test('rejects bridge manifests with unsupported protocol',()=>assert.throws(()=>validateBrowserBridge({schema:1,product:'Tuna Browser',launcher:'Remedy Launcher',protocol:'file://',args:['--launcher-ping','--launcher-open <https-url>'],permissions:['launch','open_http_https']})));
+const {selectReleaseAsset}=require('../src/manifest');
+test('selects a supported stable Linux installer',()=>assert.equal(selectReleaseAsset({tag_name:'v1',assets:[{name:'app.deb',browser_download_url:'https://github.com/org/repo/releases/download/v1/app.deb',size:12}]},{os:'linux',extensions:['.deb']}).name,'app.deb'));
+test('rejects drafts and prereleases',()=>assert.throws(()=>selectReleaseAsset({draft:true,assets:[]})));
+test('rejects unsupported or non-GitHub installer URLs',()=>assert.throws(()=>selectReleaseAsset({tag_name:'v1',assets:[{name:'app.deb',browser_download_url:'https://evil.test/app.deb'}]},{os:'linux',extensions:['.deb']})));

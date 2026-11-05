@@ -26,4 +26,16 @@ async function fetchBrowserBridge(fetchImpl=globalThis.fetch){
   if(!response.ok) throw new Error(`Browser bridge manifest request failed (${response.status})`);
   return validateBrowserBridge(await response.json());
 }
-module.exports={BROWSER_REPO,LAUNCHER_REPO,selectPlatform,releasesEndpoint,BROWSER_BRIDGE_MANIFEST,validateBrowserBridge,fetchBrowserBridge};
+function selectReleaseAsset(release, target=selectPlatform()){
+  if(!release||release.draft||release.prerelease) throw new Error('No stable published release available');
+  const assets=Array.isArray(release.assets)?release.assets:[];
+  const asset=assets.find(item=>typeof item.name==='string'&&target.extensions.some(ext=>item.name.toLowerCase().endsWith(ext.toLowerCase()))&&typeof item.browser_download_url==='string'&&item.browser_download_url.startsWith('https://github.com/'));
+  if(!asset) throw new Error(`No supported ${target.os} installer asset in latest stable release`);
+  return Object.freeze({tag:release.tag_name,name:asset.name,url:asset.browser_download_url,size:asset.size||null});
+}
+async function fetchLatestRelease(repo=LAUNCHER_REPO,fetchImpl=globalThis.fetch,target=selectPlatform()){
+  const response=await fetchImpl(releasesEndpoint(repo)+'/latest',{headers:{accept:'application/vnd.github+json'}});
+  if(!response.ok) throw new Error(`Release request failed (${response.status})`);
+  return selectReleaseAsset(await response.json(),target);
+}
+module.exports={BROWSER_REPO,LAUNCHER_REPO,selectPlatform,releasesEndpoint,BROWSER_BRIDGE_MANIFEST,validateBrowserBridge,fetchBrowserBridge,selectReleaseAsset,fetchLatestRelease};
