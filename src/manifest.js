@@ -26,10 +26,11 @@ async function fetchBrowserBridge(fetchImpl=globalThis.fetch){
   if(!response.ok) throw new Error(`Browser bridge manifest request failed (${response.status})`);
   return validateBrowserBridge(await response.json());
 }
-function selectReleaseAsset(release, target=selectPlatform()){
+function selectReleaseAsset(release, target=selectPlatform(), repo=BROWSER_REPO){
   if(!release||release.draft||release.prerelease) throw new Error('No stable published release available');
   const assets=Array.isArray(release.assets)?release.assets:[];
-  const expectedRepo=BROWSER_REPO;
+  if(![BROWSER_REPO,LAUNCHER_REPO].includes(repo)) throw new Error('Repository not allowed');
+  const expectedRepo=repo;
   const releaseTag=String(release.tag_name||'');
   if(!/^v?[0-9][a-zA-Z0-9._+-]*$/.test(releaseTag)) throw new Error('Release tag is missing or invalid');
   const normalizedArch=target.arch || '';
@@ -56,6 +57,6 @@ function selectReleaseAsset(release, target=selectPlatform()){
 async function fetchLatestRelease(repo=LAUNCHER_REPO,fetchImpl=globalThis.fetch,target=selectPlatform()){
   const response=await fetchImpl(releasesEndpoint(repo)+'/latest',{headers:{accept:'application/vnd.github+json'}});
   if(!response.ok) throw new Error(`Release request failed (${response.status})`);
-  return selectReleaseAsset(await response.json(),target);
+  return selectReleaseAsset(await response.json(),target,repo);
 }
 module.exports={BROWSER_REPO,LAUNCHER_REPO,selectPlatform,releasesEndpoint,BROWSER_BRIDGE_MANIFEST,validateBrowserBridge,fetchBrowserBridge,selectReleaseAsset,fetchLatestRelease};
