@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node src/cli.js",
     "check": "node --check src/cli.js && node --check src/manifest.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests"
   },
   "engines": {
     "node": ">=20"
