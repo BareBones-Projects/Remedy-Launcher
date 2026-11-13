@@ -13,5 +13,17 @@
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "files": [
+    "src/",
+    "config/",
+    "public/",
+    "api/",
+    "docs/",
+    "assets/",
+    "README.md",
+    "LICENSE",
+    "INSTALLATION.md",
+    "SECURITY.md"
+  ]
 }
