@@ -20,3 +20,25 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm run check
       - run: npm test
+
+  source-package:
+    name: Create source package and SHA256 manifest
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Create reviewed source tarball
+        run: |
+          mkdir -p dist
+          npm pack --pack-destination dist
+          cd dist
+          sha256sum *.tgz > SHA256SUMS.txt
+          printf '{"package":"remedy-launcher","source_sha":"%s","distribution":"source CLI only; no native installer or signature"}\n' "$GITHUB_SHA" > release-manifest.json
+      - name: Publish source package as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remedy-launcher-alpha-source
+          path: dist/
