@@ -29,7 +29,27 @@ async function fetchBrowserBridge(fetchImpl=globalThis.fetch){
 function selectReleaseAsset(release, target=selectPlatform()){
   if(!release||release.draft||release.prerelease) throw new Error('No stable published release available');
   const assets=Array.isArray(release.assets)?release.assets:[];
-  const asset=assets.find(item=>typeof item.name==='string'&&target.extensions.some(ext=>item.name.toLowerCase().endsWith(ext.toLowerCase()))&&typeof item.browser_download_url==='string'&&item.browser_download_url.startsWith('https://github.com/'));
+  const expectedRepo=BROWSER_REPO;
+  const releaseTag=String(release.tag_name||'');
+  if(!/^v?[0-9][a-zA-Z0-9._+-]*$/.test(releaseTag)) throw new Error('Release tag is missing or invalid');
+  const normalizedArch=target.arch || '';
+  const matchesPlatform=(name)=>{
+    const low=name.toLowerCase();
+    if(!target.extensions.some(ext=>low.endsWith(ext.toLowerCase())))return false;
+    // Only accept a named architecture when it matches the selected host.
+    if(normalizedArch==='x64'&&/(?:^|[-_.])(arm64|aarch64)(?:[-_.]|$)/i.test(name))return false;
+    if(normalizedArch==='arm64'&&/(?:^|[-_.])(x64|amd64|x86_64)(?:[-_.]|$)/i.test(name))return false;
+    return true;
+  };
+  const asset=assets.find(item=>{
+    if(typeof item.name!=='string'||!matchesPlatform(item.name)||typeof item.browser_download_url!=='string')return false;
+    let parsed;try{parsed=new URL(item.browser_download_url)}catch{return false}
+    if(parsed.protocol!=='https:'||parsed.hostname!=='github.com'||parsed.username||parsed.password||parsed.search||parsed.hash)return false;
+    const segments=parsed.pathname.split('/').filter(Boolean);
+    if(segments.length!==6||segments[2]!=='releases'||segments[3]!=='download')return false;
+    if(segments[0]!==expectedRepo.split('/')[0]||segments[1]!==expectedRepo.split('/')[1])return false;
+    return decodeURIComponent(segments[4])===releaseTag&&decodeURIComponent(segments[5])===item.name;
+  });
   if(!asset) throw new Error(`No supported ${target.os} installer asset in latest stable release`);
   return Object.freeze({tag:release.tag_name,name:asset.name,url:asset.browser_download_url,size:asset.size||null});
 }
