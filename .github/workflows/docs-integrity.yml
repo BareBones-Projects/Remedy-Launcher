@@ -1,0 +1,18 @@
+name: Documentation integrity
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify repository files
+        run: |
+          set -euo pipefail
+          for f in README.md INSTALLATION.md SECURITY.md FUNDRAISING.md assets/social-preview.svg; do test -s "$f" || { echo "Missing: $f"; exit 1; }; done
+          grep -Fq 'BareBones Projects, Designed by: Justin Levesque-Welsch' README.md
+          grep -Fq 'assets/social-preview.svg' README.md

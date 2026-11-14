@@ -1,6 +1,8 @@
+<img width="1280" height="640" alt="Remedy-Launcher-social-preview" src="https://github.com/user-attachments/assets/e81b9e13-9c27-4885-89c1-36f4f7ab2478" />
+
 # Remedy Launcher // Alpha CLI
 
-Companion to [Tuna Browser](https://github.com/Bare-Bones-Projects/Tuna-Browser).
+Companion to [Tuna Browser](https://github.com/BareBones-Projects/Tuna-Browser).
 
 This repository now contains an **initial executable Node.js CLI**, with read-only release URL discovery and platform identification. It is not yet a GUI installer, updater, or package manager.
 
@@ -10,9 +12,10 @@ npm run check
 npm test
 npm run start -- status
 npm run start -- releases-url
+npm run start -- browser-bridge
 ```
 
-No GitHub token is required for these local commands. No downloads, installations, updates, or privileged operations are performed. Cross-platform CI checks are in `.github/workflows/verify.yml`.
+`browser-bridge` fetches and validates Tuna Browser’s pinned bridge manifest from its public repository. It only reports the supported protocol and argument contract; it does not launch or install the browser. No GitHub token is required. No downloads, installations, updates, or privileged operations are performed by this command. Cross-platform CI checks are in `.github/workflows/verify.yml`.
 
 ## Security boundary
 The launcher must never request browser vault keys, cookies, tokens, or browsing history. Future release downloads must verify hashes/signatures before execution and require user confirmation.
@@ -36,3 +39,7 @@ See [the repository-specific alpha audit](docs/ALPHA_READINESS_AUDIT.md) for ver
 Current documentation and source are **not proof of production or cross-platform release readiness**. See [the repository-specific alpha audit](docs/ALPHA_READINESS_AUDIT.md) for known gaps, priority work, test gates, package validation and related project context. All build, packaging, privacy and security claims must be verified with actual tests before tagging an alpha release.
 
 Contribute through review branches and PRs; attach reproducible commands, CI results, screenshots and artifact checksums where applicable. Never commit credentials, personal records, generated caches or transient database files.
+
+
+---
+BareBones Projects, Designed by: Justin Levesque-Welsch

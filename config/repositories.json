@@ -1,6 +1,6 @@
 {
-  "organization": "Bare-Bones-Projects",
-  "browser": "https://github.com/Bare-Bones-Projects/Tuna-Browser",
-  "launcher": "https://github.com/Bare-Bones-Projects/Remedy-Launcher",
+  "organization": "BareBones-Projects",
+  "browser": "https://github.com/BareBones-Projects/Tuna-Browser",
+  "launcher": "https://github.com/BareBones-Projects/Remedy-Launcher",
   "status": "alpha-cli-no-installer"
 }
