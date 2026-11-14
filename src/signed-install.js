@@ -36,7 +36,7 @@ function stateFile(root){return path.join(root,'state.json');}
 function readState(root){
  try{
   const state=JSON.parse(fs.readFileSync(stateFile(root),'utf8'));
-  const valid=x=>x===null||(typeof x==='string'&&/^(stable|beta|nightly)-v?\\d+\\.\\d+\\.\\d+(?:[-+][a-zA-Z0-9.-]+)?-(windows|macos|linux)-(x64|arm64)$/.test(x));
+  const valid=x=>x===null||(typeof x==='string'&&/^(stable|beta|nightly)-v?\d+\.\d+\.\d+(?:[-+][a-zA-Z0-9.-]+)?-(windows|macos|linux)-(x64|arm64)$/.test(x));
   if(!valid(state.active)||!valid(state.previous)||!Array.isArray(state.history)||!state.history.every(x=>valid(x)&&x!==null))throw Error('Invalid managed installation state');
   return state;
  }catch(e){if(e.code==='ENOENT')return {active:null,previous:null,history:[]};throw e;}
