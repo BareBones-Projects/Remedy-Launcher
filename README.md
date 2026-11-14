@@ -2,7 +2,7 @@
 
 <img width="1280" height="640" alt="Remedy-Launcher-social-preview" src="https://github.com/user-attachments/assets/e81b9e13-9c27-4885-89c1-36f4f7ab2478" />
 
-# Remedy Launcher // Alpha CLI
+# Remedy Launcher // UPDATED: v0.10.3-alpha.1
 
 Companion to [Tuna Browser](https://github.com/BareBones-Projects/Tuna-Browser).
 
