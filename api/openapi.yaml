@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
   title: Remedy Launcher API
-  version: 0.1.0
-  description: Draft contract for repository discovery, provider status, and support intake. Install actions remain native-companion responsibilities.
+  version: 0.10.3-alpha.1
+  description: A standalone launcher for all BareBones product downloads.
 servers:
   - url: http://localhost:4173/api
     description: Local prototype endpoint.
