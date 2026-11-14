@@ -33,7 +33,14 @@ function safeRoot(root){
 }
 function sha256(buffer){return crypto.createHash('sha256').update(buffer).digest('hex');}
 function stateFile(root){return path.join(root,'state.json');}
-function readState(root){try{return JSON.parse(fs.readFileSync(stateFile(root),'utf8'));}catch(e){if(e.code==='ENOENT')return {active:null,previous:null,history:[]};throw e;}}
+function readState(root){
+ try{
+  const state=JSON.parse(fs.readFileSync(stateFile(root),'utf8'));
+  const valid=x=>x===null||(typeof x==='string'&&/^(stable|beta|nightly)-v?\\d+\\.\\d+\\.\\d+(?:[-+][a-zA-Z0-9.-]+)?-(windows|macos|linux)-(x64|arm64)$/.test(x));
+  if(!valid(state.active)||!valid(state.previous)||!Array.isArray(state.history)||!state.history.every(x=>valid(x)&&x!==null))throw Error('Invalid managed installation state');
+  return state;
+ }catch(e){if(e.code==='ENOENT')return {active:null,previous:null,history:[]};throw e;}
+}
 function atomicJSON(file,value){
  const tmp=file+'.'+crypto.randomBytes(8).toString('hex')+'.tmp';
  fs.writeFileSync(tmp,JSON.stringify(value,null,2),{flag:'wx',mode:0o600});
@@ -53,6 +60,7 @@ function install({manifest,keys,artifactPath,root=defaultRoot(),consent=false,ch
  fs.mkdirSync(root,{recursive:true,mode:0o700});
  const versions=path.join(root,'versions');
  fs.mkdirSync(versions,{recursive:true,mode:0o700});
+ if(fs.lstatSync(versions).isSymbolicLink())throw Error('Symlink version store rejected');
  const key=payload.channel+'-'+payload.version+'-'+payload.platform+'-'+payload.arch;
  const destination=path.join(versions,key);
  const stage=path.join(versions,'.stage-'+crypto.randomBytes(8).toString('hex'));
@@ -73,7 +81,10 @@ function rollback({root=defaultRoot(),consent=false}){
  assertConsent(consent);root=safeRoot(root);
  const old=readState(root);
  if(!old.previous)throw Error('No prior installation to restore');
- const dest=path.join(root,'versions',old.previous);
+ const versions=path.join(root,'versions');
+ if(fs.lstatSync(versions).isSymbolicLink())throw Error('Symlink version store rejected');
+ const dest=path.join(versions,old.previous);
+ if(fs.lstatSync(dest).isSymbolicLink())throw Error('Symlink version rejected');
  const receipt=JSON.parse(fs.readFileSync(path.join(dest,'receipt.json'),'utf8'));
  const data=fs.readFileSync(path.join(dest,receipt.payload.artifact.file));
  if(sha256(data)!==receipt.sha256)throw Error('Rollback artifact integrity check failed');
@@ -85,6 +96,7 @@ function uninstall({root=defaultRoot(),consent=false}){
  const old=readState(root);
  if(!old.active)return {uninstalled:false};
  const versions=path.join(root,'versions');
+ if(fs.lstatSync(versions).isSymbolicLink())throw Error('Symlink version store rejected');
  const target=path.join(versions,old.active);
  if(!fs.existsSync(target))throw Error('Active installation is missing');
  if(fs.lstatSync(target).isSymbolicLink())throw Error('Refusing to delete symlink');
