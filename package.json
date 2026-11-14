@@ -1,8 +1,8 @@
 {
   "name": "remedy-launcher",
-  "version": "0.1.0-alpha.1",
-  "private": true,
-  "description": "Remedy Launcher alpha CLI for Bare Bones Projects",
+  "version": "0.10.3-alpha.1",
+  "private": false,
+  "description": "Remedy Launcher Alpha CLI for BareBones Projects",
   "bin": {
     "remedy-launcher": "src/cli.js"
   },
