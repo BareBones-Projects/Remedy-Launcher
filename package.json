@@ -9,9 +9,21 @@
   "scripts": {
     "start": "node src/cli.js",
     "check": "node --check src/cli.js && node --check src/manifest.js",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/manifest.test.js"
   },
   "engines": {
     "node": ">=20"
-  }
+  },
+  "files": [
+    "src/",
+    "config/",
+    "public/",
+    "api/",
+    "docs/",
+    "assets/",
+    "README.md",
+    "LICENSE",
+    "INSTALLATION.md",
+    "SECURITY.md"
+  ]
 }
