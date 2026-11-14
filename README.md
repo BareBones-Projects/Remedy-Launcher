@@ -1,24 +1,8 @@
 ![Remedy Launcher social preview](assets/social-preview.svg)
 
-<img width="1280" height="640" alt="Remedy-Launcher-social-preview" src="https://github.com/user-attachments/assets/e81b9e13-9c27-4885-89c1-36f4f7ab2478" />
+## Remedy Launcher // Update v0.
 
-# Remedy Launcher // Alpha CLI
-
-Companion to [Tuna Browser](https://github.com/BareBones-Projects/Tuna-Browser).
-
-This repository now contains an **initial executable Node.js CLI**, with read-only release URL discovery and platform identification. It is not yet a GUI installer, updater, or package manager.
-
-## Run
-```sh
-npm run check
-npm test
-npm run start -- status
-npm run start -- releases-url
-npm run start -- browser-bridge
-```
-
-`browser-bridge` fetches and validates Tuna Browser’s pinned bridge manifest from its public repository. It only reports the supported protocol and argument contract; it does not launch or install the browser. No GitHub token is required. No downloads, installations, updates, or privileged operations are performed by this command. Cross-platform CI checks are in `.github/workflows/verify.yml`.
-
+###
 ## Security boundary
 The launcher must never request browser vault keys, cookies, tokens, or browsing history. Future release downloads must verify hashes/signatures before execution and require user confirmation.
 
