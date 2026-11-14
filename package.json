@@ -11,7 +11,7 @@
     "start": "node src/cli.js",
     "manage": "node src/manage-cli.js",
     "check": "node --check src/cli.js && node --check src/manifest.js && node --check src/signed-install.js && node --check src/manage-cli.js",
-    "test": "node --test tests"
+    "test": "node --test tests/manifest.test.js tests/signed-install.test.js"
   },
   "engines": {
     "node": ">=20"
