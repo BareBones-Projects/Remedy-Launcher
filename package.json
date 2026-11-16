@@ -4,12 +4,14 @@
   "private": false,
   "description": "Remedy Launcher Alpha CLI for BareBones Projects",
   "bin": {
-    "remedy-launcher": "src/cli.js"
+    "remedy-launcher": "src/cli.js",
+    "remedy-manage": "src/manage-cli.js"
   },
   "scripts": {
     "start": "node src/cli.js",
-    "check": "node --check src/cli.js && node --check src/manifest.js",
-    "test": "node --test tests/manifest.test.js"
+    "manage": "node src/manage-cli.js",
+    "check": "node --check src/cli.js && node --check src/manifest.js && node --check src/signed-install.js && node --check src/manage-cli.js",
+    "test": "node --test tests/manifest.test.js tests/signed-install.test.js"
   },
   "engines": {
     "node": ">=20"
