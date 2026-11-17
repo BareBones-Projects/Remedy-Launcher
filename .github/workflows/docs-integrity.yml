@@ -6,13 +6,14 @@ on:
 permissions:
   contents: read
 jobs:
-  docs:
+  integrity:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Verify repository files
-        run: |
-          set -euo pipefail
-          for f in README.md INSTALLATION.md SECURITY.md FUNDRAISING.md assets/social-preview.svg; do test -s "$f" || { echo "Missing: $f"; exit 1; }; done
-          grep -Fq 'BareBones Projects, Designed by: Justin Levesque-Welsch' README.md
-          grep -Fq 'assets/social-preview.svg' README.md
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify documentation links and catalog consistency
+        run: node tests/docs-integrity.test.js
+      - name: JavaScript syntax checks
+        run: npm run check
