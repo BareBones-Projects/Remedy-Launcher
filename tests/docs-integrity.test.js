@@ -15,6 +15,8 @@ for(const item of catalog.items){
  assert.match(item.url,/^https:\/\/github\.com\/BareBones-Projects\/[A-Za-z0-9._-]+$/);
  assert.ok(read('public/app.js').includes(item.url),'catalog JS missing '+item.url);
 }
-assert.ok(read('public/index.html').includes('https://github.com/BareBones-Projects/legal-page'),'Legal footer link missing');
-assert.ok(!read('public/index.html').includes('href="/API.md"'),'broken legacy API link');
+const indexHtml=read('public/index.html');
+const hrefs=[...indexHtml.matchAll(/href\s*=\s*["']([^"']+)["']/g)].map(m=>m[1]);
+assert.ok(hrefs.includes('https://github.com/BareBones-Projects/legal-page'),'Legal footer link missing');
+assert.ok(!indexHtml.includes('href="/API.md"'),'broken legacy API link');
 console.log('Docs, catalog parity and legal link verified: '+catalog.items.length+' repository cards');
