@@ -15,9 +15,10 @@ npm run start -- status
 npm run start -- releases-url
 npm run start -- browser-bridge
 ```
-The browser UI in `public/` needs an HTTP host and is not an installed desktop application. Detailed development steps: [Development](docs/DEVELOPMENT.md).
+Preview the styled launcher locally with `npm run preview` then open http://127.0.0.1:8765/ (browser preview only; no native install/update). The browser UI in `public/` is not an installed desktop application. Detailed development steps: [Development](docs/DEVELOPMENT.md).
 
 ## Documentation
+- [Locked Midnight Blue 01 visual theme and UI acceptance](docs/UI_THEME.md)
 - [Architecture and directory map](docs/ARCHITECTURE.md)
 - [Installation, permissions and usage](INSTALLATION.md)
 - [Development and reproducible commands](docs/DEVELOPMENT.md)
