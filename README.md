@@ -1,47 +1,47 @@
-![Remedy Launcher social preview](assets/social-preview.svg)
+![Remedy Launcher preview](assets/social-preview.svg)
+# Remedy Launcher
+**BareBones Projects · Alpha development · not a verified native installer**
 
-<img width="1280" height="640" alt="Remedy-Launcher-social-preview" src="https://github.com/user-attachments/assets/e81b9e13-9c27-4885-89c1-36f4f7ab2478" />
+Remedy Launcher provides a read-only release discovery CLI, a browser-preview catalog of BareBones repositories, and an experimental, explicit-consent **user-scoped managed artifact** workflow. It does **not** yet deploy native OS packages or run a signed desktop companion. Do not describe browser catalog cards as verified downloads.
 
-# Remedy Launcher // UPDATED: v0.10.3-alpha.1
-
-Companion to [Tuna Browser](https://github.com/BareBones-Projects/Tuna-Browser).
-
-This repository now contains an **initial executable Node.js CLI**, with read-only release URL discovery and platform identification. It is not yet a GUI installer, updater, or package manager.
-
-## Run
+## Quickstart
+Requires Node.js 20 or 22 (other versions unverified).
 ```sh
+git clone https://github.com/BareBones-Projects/Remedy-Launcher.git
+cd Remedy-Launcher
 npm run check
 npm test
 npm run start -- status
 npm run start -- releases-url
 npm run start -- browser-bridge
 ```
+Preview the styled launcher locally with `npm run preview` then open http://127.0.0.1:8765/ (browser preview only; no native install/update). The browser UI in `public/` is not an installed desktop application. Detailed development steps: [Development](docs/DEVELOPMENT.md).
 
-`browser-bridge` fetches and validates Tuna Browser’s pinned bridge manifest from its public repository. It only reports the supported protocol and argument contract; it does not launch or install the browser. No GitHub token is required. No downloads, installations, updates, or privileged operations are performed by this command. Cross-platform CI checks are in `.github/workflows/verify.yml`.
+## Documentation
+- [Locked Midnight Blue 01 visual theme and UI acceptance](docs/UI_THEME.md)
+- [Architecture and directory map](docs/ARCHITECTURE.md)
+- [Installation, permissions and usage](INSTALLATION.md)
+- [Development and reproducible commands](docs/DEVELOPMENT.md)
+- [Functional and negative-path testing](docs/TESTING.md)
+- [Packaging, channels, release gates and rollback](docs/RELEASE.md)
+- [Identity migration and design decisions](docs/DECISIONS.md)
+- [Security policy, versions and branch policy](SECURITY.md)
+- [Changelog](CHANGELOG.md)
+- [Alpha readiness and known limitations](docs/ALPHA_READINESS_AUDIT.md)
+- [Existing managed install foundation](docs/MANAGED_INSTALL.md)
 
-## Security boundary
-The launcher must never request browser vault keys, cookies, tokens, or browsing history. Future release downloads must verify hashes/signatures before execution and require user confirmation.
+## Ecosystem directory
+The launcher preview groups repository image cards into **Browse & Extensions**, **BareBones Tools & Services**, **BareBones Themes** and **Plugins**. Cards open the respective GitHub repositories. The directory includes [Tuna Browser](https://github.com/BareBones-Projects/Tuna-Browser), [Dark Search Extension](https://github.com/BareBones-Projects/dark-search-extention), [TruthMeta](https://github.com/BareBones-Projects/TruthMeta), and other BareBones projects. [BareTools](https://github.com/BareBones-Projects/BareTools) is the free-tools destination. Entries are links, not trust endorsements or installation commands.
 
-License: Apache-2.0 (see LICENSE).
+## Security and privacy
+Only an approved, pre-pinned Ed25519 public key can authenticate production manifests. Local CLI key mappings are a test seam, **not** an automatically trusted source. SHA-256 detects changes to bytes; it is not malware scanning. Browser folder preview uses files explicitly selected by a user; do not submit sensitive files or secrets to support forms. Network requests made by the preview/API depend on how it is hosted. [Security details](SECURITY.md).
 
----
+## Tests and release status
+Run `npm run check && npm test`. Consult [GitHub Actions](https://github.com/BareBones-Projects/Remedy-Launcher/actions) for the exact commit's passing results. The source package workflow is **not** evidence of notarized/signed Windows, macOS or Linux installers. [Release gates](docs/RELEASE.md).
 
-## // Alpha readiness · 2026-10-31
+## Troubleshooting
+Unsupported host: use Node.js on x64/arm64 Windows/macOS/Linux. Signature failure: confirm the manifest, expected key, product and platform. No stable release: check published assets in the allowed repository. Do not disable verification to bypass a failure. [More details](docs/TESTING.md).
 
-This repository is undergoing pre-alpha verification. The presence of source files, illustrative screenshots, or release notes is **not** evidence that every platform build, deployment, security property, or runtime feature has passed testing.
+BareBones Projects, Designed by: Justin Levesque-Welsch.
 
-See [the repository-specific alpha audit](docs/ALPHA_READINESS_AUDIT.md) for verified source-inventory findings, unresolved gaps, suggested pull requests, testing requirements, packaging criteria, and related project conversation topics. Review the checked-in implementation and passing test results before promoting the current work to an alpha release.
-
-**Contribution workflow:** work on review branches, attach test evidence and sample artifacts to pull requests, and merge only after acceptance. Avoid committing credentials, transient databases, real personal information, or generated caches.
-
----
-
-## // Alpha readiness · 2026-10-31
-
-Current documentation and source are **not proof of production or cross-platform release readiness**. See [the repository-specific alpha audit](docs/ALPHA_READINESS_AUDIT.md) for known gaps, priority work, test gates, package validation and related project context. All build, packaging, privacy and security claims must be verified with actual tests before tagging an alpha release.
-
-Contribute through review branches and PRs; attach reproducible commands, CI results, screenshots and artifact checksums where applicable. Never commit credentials, personal records, generated caches or transient database files.
-
-
----
-BareBones Projects, Designed by: Justin Levesque-Welsch
+[Legal](https://github.com/BareBones-Projects/legal-page)
