@@ -1,9 +1,44 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><title>Remedy Launcher · BareBones Projects</title><link rel="stylesheet" href="/style.css"></head>
-<body><header><a class="brand" href="#top">REMEDY<span> LAUNCHER</span></a><nav><a href="#catalog">Explore</a><a href="#workspace">Workspace</a><a href="#support">Support</a><button id="login">Sign in</button></nav></header>
-<main id="top"><section class="hero"><p class="eyebrow">BAREBONES PROJECTS · LAUNCHER ALPHA PREVIEW</p><h1>Your tools.<br><span>One launchpad.</span></h1><p class="intro">Browse BareBones applications, extensions, themes and services. Catalog links open their source repositories. Native installation and automatic updates are not available in this browser preview.</p><div class="actions"><button class="primary" id="openFiles">Preview local folder</button><a class="action-link" href="https://github.com/BareBones-Projects/Remedy-Launcher/releases" rel="noopener noreferrer" target="_blank">Launcher releases</a></div><small>Never run a downloaded installer without verifying its origin and publisher.</small></section>
-<section id="catalog"><div class="section-head"><div><p class="eyebrow">PROJECT DIRECTORY</p><h2>BareBones ecosystem</h2></div><span class="tag">REPOSITORY LINKS · NOT INSTALLERS</span></div><div id="catalogGroups"></div></section>
-<section class="panel" id="workspace"><div class="section-head"><div><p class="eyebrow">WORKSPACE</p><h2>Local folder preview</h2></div><span class="tag">LOCAL ONLY</span></div><div id="filelist" class="filelist"><div class="empty">Choose a local folder to list its names and sizes in this browser.</div></div><input id="folder" type="file" webkitdirectory multiple hidden></section>
-<section class="panel" id="support"><div class="section-head"><div><p class="eyebrow">HELP DESK</p><h2>Support</h2></div><span class="tag">API AVAILABILITY VARIES</span></div><form id="ticket"><label>Subject<input name="subject" required maxlength="120" placeholder="What do you need help with?"></label><label>Details<textarea name="message" required rows="4" placeholder="Steps to reproduce the issue. Never include passwords or tokens."></textarea></label><button class="primary">Create support ticket</button><p id="ticketStatus" role="status"></p></form></section>
-<section class="panel"><p class="eyebrow">IDENTITY</p><h2>Provider previews</h2><div id="providers" class="providers"></div><p class="muted">Sign-in is disabled until OAuth applications and callbacks are configured and verified.</p></section></main>
-<footer><span>BAREBONES PROJECTS · REMEDY LAUNCHER</span><a href="https://github.com/BareBones-Projects/legal-page" target="_blank" rel="noopener noreferrer">Legal</a></footer><script type="module" src="/app.js"></script></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07111d">
+<meta name="description" content="Remedy Launcher, BareBones Projects directory preview.">
+<title>Remedy Launcher | BareBones Projects</title><link rel="icon" href="./assets/remedy-mark.svg" type="image/svg+xml"><link rel="stylesheet" href="./style.css"></head>
+<body>
+<div class="app-window" id="top">
+ <aside class="sidebar" aria-label="Launcher navigation">
+  <a class="brand" href="#top"><img src="./assets/remedy-mark.svg" alt="" width="54" height="54"><span>Remedy<br>Launcher</span></a>
+  <div class="sidebar-rule"></div>
+  <nav class="side-nav" id="navigation" aria-label="Sections">
+   <button type="button" class="nav-item active" data-view="home" aria-current="page"><span class="nav-glyph">⌂</span><span>Home</span></button>
+   <button type="button" class="nav-item" data-view="library"><span class="nav-glyph">▦</span><span>Library</span></button>
+   <button type="button" class="nav-item" data-view="updates"><span class="nav-glyph">⇩</span><span>Updates</span></button>
+   <button type="button" class="nav-item" data-view="repositories"><span class="nav-glyph">⬡</span><span>Repositories</span></button>
+   <button type="button" class="nav-item" data-view="extensions"><span class="nav-glyph">✣</span><span>Extensions</span></button>
+   <button type="button" class="nav-item" data-view="tools"><span class="nav-glyph">⚒</span><span>Tools</span></button>
+   <button type="button" class="nav-item" data-view="themes"><span class="nav-glyph">◈</span><span>Themes</span></button>
+   <button type="button" class="nav-item" data-view="settings"><span class="nav-glyph">⚙</span><span>Settings</span></button>
+  </nav>
+  <div class="sidebar-bottom"><i class="status-dot"></i><span>Catalog preview online</span></div>
+ </aside>
+ <div class="content-column">
+  <header class="topbar">
+   <label class="search-shell" for="globalSearch"><span aria-hidden="true" class="search-icon">⌕</span><input type="search" id="globalSearch" autocomplete="off" placeholder="Search apps, tools, and repositories..." aria-label="Search project catalog"><kbd>Ctrl K</kbd></label>
+   <div class="topbar-actions"><a class="header-link" href="https://github.com/BareBones-Projects/Remedy-Launcher" target="_blank" rel="noopener noreferrer">GitHub ↗</a><button type="button" class="icon-button" id="notifications" aria-label="Release status">♧</button><button type="button" id="login" class="avatar-button" aria-label="Account status">R</button></div>
+  </header>
+  <main class="app-main">
+   <section id="hero" class="hero" aria-labelledby="heroTitle">
+    <div class="hero-copy"><img class="hero-mark" src="./assets/remedy-mark.svg" alt=""><div><p class="eyebrow">BAREBONES PROJECTS · ALPHA UI</p><h1 id="heroTitle">Remedy Launcher</h1><p>Apps · Repositories · Tools · Extensions</p></div></div>
+    <div class="hero-devices" aria-hidden="true"><div class="fake-monitor monitor-one"><i></i><span></span><span></span><span></span></div><div class="fake-monitor monitor-two"><i></i><span></span><span></span></div></div>
+    <div class="hero-dots" aria-hidden="true"><i class="active"></i><i></i><i></i></div>
+   </section>
+   <div class="view-titlebar"><div><p class="eyebrow" id="viewEyebrow">BAREBONES ECOSYSTEM</p><h2 id="viewTitle">Featured projects</h2></div><span id="viewCount" class="view-counter">Repository links only</span></div>
+   <p id="notice" class="view-notice" role="status" aria-live="polite">Explore project repositories. Native installation and automatic updates are not yet supported.</p>
+   <div id="catalogGroups" class="catalog-root" aria-live="polite"></div>
+   <section id="workspace" class="workspace-panel"><div class="panel-heading"><div><p class="eyebrow">LOCAL WORKSPACE</p><h2>Folder preview</h2></div><button type="button" class="small-button" id="openFiles">▤ Choose folder</button></div><p class="subtle">Only file names and sizes you select are listed locally. No upload is performed.</p><div id="filelist" class="filelist">No folder selected.</div><input id="folder" type="file" webkitdirectory multiple hidden></section>
+   <section id="support" class="support-panel"><div class="panel-heading"><div><p class="eyebrow">HELP DESK</p><h2>Support preview</h2></div><span class="pill">API availability varies</span></div><form id="ticket"><label>Subject<input name="subject" required maxlength="120" placeholder="What needs fixing?"></label><label>Details<textarea name="message" required rows="3" placeholder="Reproduction steps only. Never include passwords or tokens."></textarea></label><button type="submit" class="small-button">Submit ticket</button><p id="ticketStatus" role="status"></p></form></section>
+   <section id="settingsPanel" class="settings-panel" hidden><p class="eyebrow">PREFERENCES</p><h2>Display and integrations</h2><div class="settings-row"><span>Appearance</span><strong>Midnight Blue 01 · locked</strong></div><div class="settings-row"><span>Automatic installation</span><strong>Not available</strong></div><div class="settings-row"><span>Account status</span><span id="providers">OAuth providers not configured</span></div></section>
+   <footer class="footer"><span>Remedy Launcher · BareBones Projects · Alpha preview</span><a href="https://github.com/BareBones-Projects/legal-page" target="_blank" rel="noopener noreferrer">Legal</a></footer>
+  </main>
+  <section class="download-dock" aria-label="Download status"><div class="dock-icon">⇩</div><div class="dock-title"><strong>Downloads</strong><small>No active transfers</small></div><div class="dock-separator"></div><div class="dock-progress"><div class="dock-progress-meta"><strong>Installer integration pending</strong><small>Catalog navigation only</small></div><div class="track"><span></span></div></div><a class="dock-link" href="https://github.com/BareBones-Projects/Remedy-Launcher/releases" target="_blank" rel="noopener noreferrer" aria-label="Inspect Remedy Launcher releases">↗</a></section>
+ </div>
+</div>
+<script type="module" src="./app.js"></script></body></html>
