@@ -2,7 +2,7 @@
   "name": "remedy-launcher",
   "version": "0.10.3-alpha.1",
   "private": false,
-  "description": "Remedy Launcher Alpha CLI for BareBones Projects",
+  "description": "Remedy Launcher Alpha CLI and Midnight Blue browser preview",
   "bin": {
     "remedy-launcher": "src/cli.js",
     "remedy-manage": "src/manage-cli.js"
@@ -10,8 +10,9 @@
   "scripts": {
     "start": "node src/cli.js",
     "manage": "node src/manage-cli.js",
-    "check": "node --check src/cli.js && node --check src/manifest.js && node --check src/signed-install.js && node --check src/manage-cli.js",
-    "test": "node --test tests/manifest.test.js tests/signed-install.test.js"
+    "check": "node --check src/cli.js && node --check src/manifest.js && node --check src/signed-install.js && node --check src/manage-cli.js && node --check public/app.js && node --check public/catalog-data.js && node --check public/catalog-model.mjs && node --check scripts/preview-server.cjs",
+    "test": "node --test tests/manifest.test.js tests/signed-install.test.js tests/catalog-model.test.mjs tests/ui-theme.test.js tests/preview-server.test.js",
+    "preview": "node scripts/preview-server.cjs"
   },
   "engines": {
     "node": ">=20"
@@ -26,6 +27,7 @@
     "README.md",
     "LICENSE",
     "INSTALLATION.md",
-    "SECURITY.md"
+    "SECURITY.md",
+    "scripts/"
   ]
 }
