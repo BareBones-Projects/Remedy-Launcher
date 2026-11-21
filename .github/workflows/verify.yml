@@ -1,5 +1,6 @@
 name: Remedy Launcher alpha verification
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
@@ -7,15 +8,25 @@ permissions:
   contents: read
 jobs:
   test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+        node: ['20', '22']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - run: npm run check
-      - run: npm test
-      - run: npm run start -- status
+          node-version: ${{ matrix.node }}
+      - name: Verify all source syntax
+        run: npm run check
+      - name: Functional and negative-path tests
+        run: npm test
+      - name: Documentation integrity and catalog tests
+        run: node tests/docs-integrity.test.js
+      - name: CLI status smoke test
+        run: npm run start -- status
+      - name: Source package dry run
+        run: npm pack --dry-run
